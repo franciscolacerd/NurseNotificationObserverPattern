@@ -34,7 +34,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void Paciente_RemoveEnfermeiro_NaoDeveNotificarEnfermeiroRemovido()
+        public void Should_RemoveNurseAndNotNotifyRemovedNurse_ReturnTrue()
         {
             this._pacient.AddNurse(this._firstNurse);
             this._pacient.AddNurse(this._secondNurse);
