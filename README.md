@@ -10,3 +10,9 @@ For instance, when a patient's condition changes to "critical," all registered n
 By decoupling the notification mechanism from the patient state logic, the system becomes more flexible and scalable. New types of observers (such as additional hospital staff or external monitoring systems) can be easily added without modifying the patient’s core functionality.
 
 ------
+
+In software design and engineering, the observer pattern is a software design pattern in which an object, named the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.
+
+![Observer_Design_Pattern_UML](https://upload.wikimedia.org/wikipedia/commons/0/01/W3sDesign_Observer_Design_Pattern_UML.jpg)
+
+https://en.wikipedia.org/wiki/Observer_pattern
