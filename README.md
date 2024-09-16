@@ -21,3 +21,133 @@ https://en.wikipedia.org/wiki/Observer_pattern
 
 ## C# Implementation
 
+
+### 1. Declare entities 
+
+#### Conditions
+```c#
+    public struct Conditions
+    {
+        public const string Critical = "Critical";
+        public const string Stable = "Stable";
+    }
+```
+### 2. Declare contract interfaces
+#### IPacient
+```c#
+    public interface IPacient
+    {
+        void AddNurse(INurse nurse);
+
+        void RemoveNurse(INurse nurse);
+
+        void NotifyNurses(string message);
+    }
+```
+
+#### INurse
+```c#
+    public interface INurse
+    {
+        void Update(string message);
+    }
+```
+
+### 3. Declare implementation
+#### Pacient
+```c#
+    public class Pacient : IPacient
+    {
+        private List<INurse> nurses = new List<INurse>();
+
+        public void AddNurse(INurse nurse)
+        {
+            this.nurses.Add(nurse);
+        }
+
+        public void NotifyNurses(string message)
+        {
+            foreach (var nurse in this.nurses)
+            {
+                nurse.Update(message);
+            }
+        }
+
+        public void RemoveNurse(INurse nurse)
+        {
+            this.nurses.Remove(nurse);
+        }
+
+        public void ChangeCondition(string newCondition)
+        {
+            NotifyNurses($"The patient's condition changed to: {newCondition}");
+        }
+    }
+```
+#### Nurse
+```c#
+    public class Nurse : INurse
+    {
+        private string name;
+        public List<string> Notifications { get; private set; }
+
+        public Nurse(string name)
+        {
+            this.name = name;
+            this.Notifications = new List<string>();
+        }
+
+        public void Update(string message)
+        {
+            this.Notifications.Add(message);
+        }
+    }
+```
+
+### 4. Unit test it (NUnit)
+```c#
+public class NotificationsUnitTest
+    {
+        private Pacient _pacient;
+        private Nurse _firstNurse;
+        private Nurse _secondNurse;
+
+        [SetUp]
+        public void Setup()
+        {
+            this._pacient = new Pacient();
+            this._firstNurse = new Nurse("John Doe");
+            this._secondNurse = new Nurse("Jane Doe");
+        }
+
+        [Test]
+        public void Should_AddNurseAndNotify_ReturnTrue()
+        {
+            this._pacient.AddNurse(this._firstNurse);
+            this._pacient.AddNurse(this._secondNurse);
+
+            this._pacient.ChangeCondition(Conditions.Critical);
+
+            this._firstNurse.Notifications.Should().ContainSingle()
+                .Which.Should().Be($"The patient's condition changed to: {Conditions.Critical}");
+
+            this._secondNurse.Notifications.Should().ContainSingle()
+                .Which.Should().Be($"The patient's condition changed to: {Conditions.Critical}");
+        }
+
+        [Test]
+        public void Should_RemoveNurseAndNotNotifyRemovedNurse_ReturnTrue()
+        {
+            this._pacient.AddNurse(this._firstNurse);
+            this._pacient.AddNurse(this._secondNurse);
+            this._pacient.RemoveNurse(this._firstNurse);
+
+            this._pacient.ChangeCondition(Conditions.Stable);
+
+            this._firstNurse.Notifications.Should().BeEmpty();
+
+            this._secondNurse.Notifications.Should().ContainSingle()
+                .Which.Should().Be($"The patient's condition changed to: {Conditions.Stable}");
+        }
+    }
+```
