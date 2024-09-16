@@ -106,7 +106,7 @@ https://en.wikipedia.org/wiki/Observer_pattern
 
 ### 4. Unit test it (NUnit)
 ```c#
-public class NotificationsUnitTest
+    public class NotificationsUnitTest
     {
         private Pacient _pacient;
         private Nurse _firstNurse;
