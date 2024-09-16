@@ -16,3 +16,8 @@ In software design and engineering, the observer pattern is a software design pa
 ![Observer_Design_Pattern_UML](https://upload.wikimedia.org/wikipedia/commons/0/01/W3sDesign_Observer_Design_Pattern_UML.jpg)
 
 https://en.wikipedia.org/wiki/Observer_pattern
+
+------
+
+## C# Implementation
+
